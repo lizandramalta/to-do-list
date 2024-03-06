@@ -7,6 +7,7 @@ export function Home() {
   return (
     <View style={homeStyles.container}>
       <Header />
+      <NewTaskInput />
     </View>
   );
 }
