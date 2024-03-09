@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { newTaskInputStyles } from "./styles";
-import { useState } from "react";
-import PlusIcon from "../../assets/plus-icon.svg";
+import { AddIcon } from "../../icons";
 
 type NewTaskInputProps = {
   onAddTask: (task: string) => void;
@@ -29,8 +29,10 @@ export function NewTaskInput({ onAddTask }: NewTaskInputProps) {
   }
 
   function handleAddTask() {
-    onAddTask(task);
-    setTask("");
+    if (task !== "") {
+      onAddTask(task);
+      setTask("");
+    }
   }
 
   function renderAddButton() {
@@ -45,7 +47,7 @@ export function NewTaskInput({ onAddTask }: NewTaskInputProps) {
         onPressOut={handleButtonPressOut}
         onPress={handleAddTask}
       >
-        <PlusIcon />
+        <AddIcon />
       </TouchableOpacity>
     );
   }

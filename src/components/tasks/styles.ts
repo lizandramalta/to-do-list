@@ -77,6 +77,9 @@ export const tasksStyles = StyleSheet.create({
     color: "#808080",
     textDecorationLine: "line-through",
   },
+  taskLastItem: {
+    marginBottom: (Dimensions.get("window").height * 64) / 1624,
+  },
   deleteButtonIcon: {
     color: "#808080",
   },

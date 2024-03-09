@@ -1,16 +1,25 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import { Task } from "../../@types/task";
-import CheckIcon from "../../assets/check-icon.svg";
-import TrashIcon from "../../assets/trash-icon.svg";
-import { tasksStyles } from "./styles";
+import { CheckIcon, TrashIcon } from "../../icons";
 import CustomizedText from "../text";
+import { tasksStyles } from "./styles";
 
 type TaskItemProps = {
   task: Task;
+  tasks: Task[];
+  onCheckTask: (task: Task) => void;
+  onDeleteTask: (task: Task) => void;
 };
 
-export function TaskItem({ task }: TaskItemProps) {
+const ARRAY_LAST_INDEX = 1;
+
+export function TaskItem({
+  task,
+  tasks,
+  onCheckTask,
+  onDeleteTask,
+}: TaskItemProps) {
   const [deleteButtonOnHover, setDeleteButtonOnHover] = useState(false);
   const [checkButtonOnHover, setCheckButtonOnHover] = useState(false);
 
@@ -30,10 +39,23 @@ export function TaskItem({ task }: TaskItemProps) {
     setCheckButtonOnHover(false);
   }
 
+  function handleDeleteTask() {
+    onDeleteTask(task);
+  }
+
+  function handleCheckTask() {
+    onCheckTask(task);
+  }
+
+  function isTaskLastItem() {
+    return task.id === tasks[tasks.length - ARRAY_LAST_INDEX].id;
+  }
+
   function renderDeleteButton() {
     return (
       <TouchableOpacity
         activeOpacity={100}
+        onPress={handleDeleteTask}
         onPressIn={handleDeleteButtonPressIn}
         onPressOut={handleDeleteButtonPressOut}
         style={deleteButtonOnHover && tasksStyles.deleteButtonOnHover}
@@ -59,6 +81,7 @@ export function TaskItem({ task }: TaskItemProps) {
         };
     return (
       <TouchableOpacity
+        onPress={handleCheckTask}
         onPressIn={handleCheckButtonPressIn}
         onPressOut={handleCheckButtonPressOut}
         style={[
@@ -72,8 +95,16 @@ export function TaskItem({ task }: TaskItemProps) {
       </TouchableOpacity>
     );
   }
+
   return (
-    <View style={tasksStyles.taskItemView}>
+    <View
+      style={[
+        tasksStyles.taskItemView,
+        isTaskLastItem() &&
+          Platform.OS === "android" &&
+          tasksStyles.taskLastItem,
+      ]}
+    >
       {renderCheckButton(task.done)}
       <CustomizedText
         style={[

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, Image, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, View } from "react-native";
 import { Task } from "../../@types/task";
 import emptyView from "../../assets/empty-view.png";
 import CustomizedText from "../text";
@@ -8,13 +8,16 @@ import { TaskItem } from "./taskItem";
 
 type TasksProps = {
   tasks: Task[];
+  onCheckTask: (task: Task) => void;
+  onDeleteTask: (task: Task) => void;
 };
 
-export function Tasks({ tasks }: TasksProps) {
+export function Tasks({ tasks, onCheckTask, onDeleteTask }: TasksProps) {
   const [doneTasks, setDoneTasks] = useState(0);
 
   useEffect(() => {
-    setDoneTasks(tasks.reduce((acc, task) => (task.done ? ++acc : 0), 0));
+    const completedTasks = tasks.filter((task) => task.done).length;
+    setDoneTasks(completedTasks);
   }, [tasks]);
 
   function renderEmptyView() {
@@ -71,11 +74,21 @@ export function Tasks({ tasks }: TasksProps) {
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <TaskItem task={item} />}
+        renderItem={({ item }) => (
+          <TaskItem
+            task={item}
+            tasks={tasks}
+            onCheckTask={onCheckTask}
+            onDeleteTask={onDeleteTask}
+          />
+        )}
         contentContainerStyle={tasksStyles.tasksView}
         ListEmptyComponent={renderEmptyView}
         ListHeaderComponent={renderListHeader}
         ListHeaderComponentStyle={tasksStyles.tasksHeaderView}
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustContentInsets
+        contentInset={{ bottom: 200 }}
       />
     </View>
   );
