@@ -28,6 +28,28 @@ export function NewTaskInput({ onAddTask }: NewTaskInputProps) {
     isButtonOnHover(false);
   }
 
+  function handleAddTask() {
+    onAddTask(task);
+    setTask("");
+  }
+
+  function renderAddButton() {
+    return (
+      <TouchableOpacity
+        style={[
+          newTaskInputStyles.button,
+          buttonOnHover && newTaskInputStyles.buttonOnHover,
+        ]}
+        activeOpacity={100}
+        onPressIn={handleButtonPressIn}
+        onPressOut={handleButtonPressOut}
+        onPress={handleAddTask}
+      >
+        <PlusIcon />
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <View style={newTaskInputStyles.container}>
       <View style={newTaskInputStyles.barView}>
@@ -43,17 +65,7 @@ export function NewTaskInput({ onAddTask }: NewTaskInputProps) {
           onChangeText={setTask}
           value={task}
         ></TextInput>
-        <TouchableOpacity
-          style={[
-            newTaskInputStyles.button,
-            buttonOnHover && newTaskInputStyles.buttonOnHover,
-          ]}
-          activeOpacity={100}
-          onPressIn={handleButtonPressIn}
-          onPressOut={handleButtonPressOut}
-        >
-          <PlusIcon />
-        </TouchableOpacity>
+        {renderAddButton()}
       </View>
     </View>
   );

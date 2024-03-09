@@ -1,20 +1,20 @@
-import React from 'react'
-import { Text, TextProps } from 'react-native'
-import { textStyles } from './styles'
+import React from "react";
+import { Text, TextProps } from "react-native";
+import { textStyles } from "./styles";
 
 interface CustomizedTextProps {
-  weight?: 'regular' | 'bold'
+  weight?: "regular" | "bold";
 }
 
-export default function CustomizeText({
+export default function CustomizedText({
   children,
   style,
-  weight = 'regular',
-  testID
+  weight = "regular",
+  testID,
 }: TextProps & CustomizedTextProps) {
   return (
     <Text style={[style, textStyles[weight]]} testID={testID}>
       {children}
     </Text>
-  )
+  );
 }
