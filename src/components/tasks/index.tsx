@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FlatList, Image, View } from "react-native";
 import { Task } from "../../@types/task";
-import emptyView from "../../assets/empty-view.png";
+import emptyView from "../../../assets/empty-view.png";
 import CustomizedText from "../text";
 import { tasksStyles } from "./styles";
 import { TaskItem } from "./taskItem";
